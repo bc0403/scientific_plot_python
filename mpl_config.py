@@ -5,6 +5,20 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 import matplotlib.font_manager as font_manager
 
+# Define the Nature Reviews palette
+npg_colors = [
+    "#E64B35",  # Red
+    "#4DBBD5",  # Blue
+    "#00A087",  # Green
+    "#3C5488",  # Dark Blue
+    "#F39B7F",  # Orange
+    "#8491B4",  # Light Grayish Blue
+    "#91D1C2",  # Cyan
+    "#DC0000",  # Bright Red
+    "#7E6148",  # Brown
+    "#B09C85"   # Beige
+]
+
 def set_mpl_params(journal='nature', column='single'):
     """
     Configure Matplotlib parameters for a specific journal and figure size.
@@ -53,10 +67,8 @@ def set_mpl_params(journal='nature', column='single'):
         mpl.rcParams['axes.linewidth'] = 0.75  # Thinner axis lines for Nature
         mpl.rcParams['lines.linewidth'] = 1.0  # Data lines
 
-        # Color palette
-        mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=[
-            'black', 'gray', 'blue', 'red', 'green'
-        ])
+        # Apply the palette to Matplotlib's default color cycle
+        mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=npg_colors)
 
     elif journal.lower() == 'ieee':
         # IEEE-specific settings
@@ -77,6 +89,11 @@ def set_mpl_params(journal='nature', column='single'):
         mpl.rcParams['legend.frameon'] = False  # Remove legend outline
         mpl.rcParams['axes.linewidth'] = 1.0  # Standard axis lines
 
+        # Color palette
+        mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=[
+            'black', 'gray', 'blue', 'red', 'green'
+        ])
+
     # Set default figure size
     mpl.rcParams['figure.figsize'] = [width, height]
 
@@ -91,17 +108,15 @@ if __name__ == "__main__":
     # Set parameters for Nature journal, single column
     set_mpl_params(journal='nature', column='single')
 
-    # Example plot
+    # Example plot using the Nature palette
     x = range(10)
-    y1 = [xi**2 for xi in x]
-    y2 = [xi**1.5 for xi in x]
-
     fig, ax = plt.subplots()
-    ax.plot(x, y1, label='Quadratic', color='blue')
-    ax.plot(x, y2, label='Power 1.5', color='red')
-    ax.set_xlabel('X-Axis Label')
-    ax.set_ylabel('Y-Axis Label')
-    ax.legend(frameon=False)  # No legend frame
+    ax.plot(x, [xi**0.5 for xi in x], label="Power 0.5")
+    ax.plot(x, [xi**1.0 for xi in x], label="Power 1.0")
+    ax.plot(x, [xi**1.5 for xi in x], label="Power 1.5")
+    ax.set_xlabel("X-Axis")
+    ax.set_ylabel("Y-Axis")
+    ax.legend()
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
 
     # Save the figure with embedded fonts
